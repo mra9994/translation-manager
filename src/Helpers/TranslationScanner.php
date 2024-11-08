@@ -18,7 +18,7 @@ class TranslationScanner
      */
     public static function scan(): array
     {
-        $files = File::allFiles(lang_path());
+        $files = static::getAllFiles(config('translation-manager.available_paths'));
 
         // Loop through all groups
         foreach ($files as $file) {
@@ -88,5 +88,15 @@ class TranslationScanner
                 }
             }
         }
+    }
+
+    private static function getAllFiles(array $paths): array
+    {
+        $files = [];
+        foreach ($paths as $item) {
+            $files = array_merge(File::allFiles($item), $files);
+        }
+
+        return $files;
     }
 }
